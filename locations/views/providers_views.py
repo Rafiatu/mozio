@@ -90,7 +90,7 @@ class ProvidersView(ViewSet):
                     {"success": "User has been logged in"}, status=status.HTTP_200_OK
                 )
             return Response(
-            {"error": "password incorrect"}, status=status.HTTP_400_BAD_REQUEST
+            {"error": f"password incorrect, {user.password} is correct"}, status=status.HTTP_400_BAD_REQUEST
             )
         return Response(
             {"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST
