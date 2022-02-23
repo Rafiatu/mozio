@@ -110,9 +110,12 @@ class ProvidersView(ViewSet):
     def register(self, request, *args, **kwargs):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.create()
-            return Response(
-                {"message": "success", "data": serializer.data},
-                status=status.HTTP_201_CREATED,
-            )
+            try:
+                serializer.save()
+                return Response(
+                    {"message": "success", "data": serializer.data},
+                    status=status.HTTP_201_CREATED,
+                )
+            except Exception as error:
+                return Response({"error": str(error)}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
