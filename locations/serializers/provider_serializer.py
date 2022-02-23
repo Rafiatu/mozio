@@ -5,4 +5,4 @@ from locations.models import Provider
 class ProviderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Provider
-        fields = "__all__"
+        fields = ["username", "email", "phone_number", "language", "currency"]
