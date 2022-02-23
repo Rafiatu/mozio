@@ -1,2 +1,2 @@
-web: gunicorn appliku_start.wsgi --log-file -
+web: gunicorn transport.wsgi --log-file -
 release: python manage.py runserver
