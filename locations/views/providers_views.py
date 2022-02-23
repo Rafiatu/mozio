@@ -1,7 +1,11 @@
 from django.contrib.auth import login, logout
 from django.shortcuts import get_object_or_404
 from locations.models import Provider
-from locations.serializers import LoginSerializer, ProviderSerializer
+from locations.serializers import (
+    LoginSerializer,
+    ProviderSerializer,
+    RegisterSerializer,
+)
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -101,3 +105,14 @@ class ProvidersView(ViewSet):
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
+    @action(detail=False, methods=["POST"])
+    def register(self, request, *args, **kwargs):
+        serializer = RegisterSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.create()
+            return Response(
+                {"message": "success", "data": serializer.data},
+                status=status.HTTP_201_CREATED,
+            )
+        return Response({"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)

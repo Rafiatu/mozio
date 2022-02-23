@@ -2,3 +2,4 @@ from .coordinates_serializer import CoordinatesSerializer
 from .login_serializer import LoginSerializer
 from .polygon_serializer import PolygonSerializer
 from .provider_serializer import ProviderSerializer
+from .register_serializer import RegisterSerializer
