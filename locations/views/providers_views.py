@@ -83,11 +83,14 @@ class ProvidersView(ViewSet):
             user = get_object_or_404(
                 Provider,
                 username=serializer.validated_data["username"],
-                password=serializer.validated_data["password"],
             )
-            login(request, user)
+            if user.password == serializer.validated_data["password"]:
+                login(request, user)
+                return Response(
+                    {"success": "User has been logged in"}, status=status.HTTP_200_OK
+                )
             return Response(
-                {"success": "User has been logged in"}, status=status.HTTP_200_OK
+            {"error": "password incorrect"}, status=status.HTTP_400_BAD_REQUEST
             )
         return Response(
             {"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST
