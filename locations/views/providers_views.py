@@ -84,13 +84,13 @@ class ProvidersView(ViewSet):
                 Provider,
                 username=serializer.validated_data["username"],
             )
-            if user.password == serializer.validated_data["password"]:
+            if user.check_password(serializer.validated_data["password"]):
                 login(request, user)
                 return Response(
                     {"success": "User has been logged in"}, status=status.HTTP_200_OK
                 )
             return Response(
-            {"error": f"password incorrect, {user.password} is correct"}, status=status.HTTP_400_BAD_REQUEST
+            {"error": f"password incorrect"}, status=status.HTTP_400_BAD_REQUEST
             )
         return Response(
             {"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST
