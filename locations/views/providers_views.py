@@ -7,6 +7,7 @@ from locations.serializers import (
     RegisterSerializer,
 )
 from rest_framework import status
+from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
@@ -86,11 +87,13 @@ class ProvidersView(ViewSet):
             )
             if user.check_password(serializer.validated_data["password"]):
                 login(request, user)
+                token = str(Token.objects.get_or_create(user=user)[0])
                 return Response(
-                    {"success": "User has been logged in"}, status=status.HTTP_200_OK
+                    {"success": "User has been logged in", "token": token},
+                    status=status.HTTP_200_OK,
                 )
             return Response(
-            {"error": f"password incorrect"}, status=status.HTTP_400_BAD_REQUEST
+                {"error": f"password incorrect"}, status=status.HTTP_400_BAD_REQUEST
             )
         return Response(
             {"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST
@@ -120,5 +123,9 @@ class ProvidersView(ViewSet):
                     status=status.HTTP_201_CREATED,
                 )
             except Exception as error:
-                return Response({"error": str(error)}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    {"error": str(error)}, status=status.HTTP_400_BAD_REQUEST
+                )
+        return Response(
+            {"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST
+        )

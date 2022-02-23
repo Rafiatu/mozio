@@ -9,13 +9,15 @@ class ProviderTests(APITestCase):
         self.user_data = {
             "username": "test_user",
             "email": "test_user@moziogroup.hr",
-            "password": "testingapis123",
             "first_name": "Test",
             "last_name": "User",
             "phone_number": "123456789",
         }
 
         self.auth_user = Provider.objects.create(**self.user_data)
+        self.password = "testingapis123"
+        self.auth_user.set_password(self.password)
+        self.auth_user.save()
 
     def test_providers_list_is_succesfully_returned(self):
         url = reverse("providers-list")
@@ -78,7 +80,7 @@ class ProviderTests(APITestCase):
         url = reverse("providers-login")
         login_request = {
             "username": self.user_data["username"],
-            "password": self.user_data["password"],
+            "password": self.password,
         }
         response = self.client.post(url, login_request, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)

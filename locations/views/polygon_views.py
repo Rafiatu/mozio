@@ -38,24 +38,25 @@ class LocationsView(ViewSet):
         if serializer.is_valid():
             coordinates_list = serializer.validated_data["coordinates"]
             del serializer.validated_data["coordinates"]
-            polygon = Polygon.objects.create(
-                provider=request.user, **serializer.validated_data
-            )
-            # coords = CoordinatesSerializer(data=coordinates_list, many=True)
-            # coords.is_valid(raise_exception=True)
-            # coords.save()
-            # print(coords)
-            # polygon.coordinates.set(coords)
-            for points in coordinates_list:
-                coordinates = Coordinate.objects.get_or_create(**points)
-                polygon.coordinates.add(coordinates)
-            return Response(
-                {
-                    "message": f"successully created new geojson Polygon {serializer.validated_data.get('name')}",
-                    "data": self.serializer_class(polygon).data,
-                },
-                status=status.HTTP_201_CREATED,
-            )
+            try:
+                polygon = Polygon.objects.get_or_create(
+                    provider=request.user, **serializer.validated_data
+                )[0]
+                for points in coordinates_list:
+                    coordinates = Coordinate.objects.get_or_create(**points)[0]
+                    polygon.coordinates.add(coordinates)
+                return Response(
+                    {
+                        "message": f"successully created new geojson Polygon {serializer.validated_data.get('name')}",
+                        "data": self.serializer_class(polygon).data,
+                    },
+                    status=status.HTTP_201_CREATED,
+                )
+            except Exception as error:
+                return Response(
+                    {"error": str(error)}, status=status.HTTP_400_BAD_REQUEST
+                )
+
         return Response(
             {"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST
         )
@@ -73,7 +74,7 @@ class LocationsView(ViewSet):
                 coordinates_list = serializer.validated_data["coordinates"]
                 del serializer.validated_data["coordinates"]
                 for points in coordinates_list:
-                    coordinates = Coordinate.objects.get_or_create(**points)
+                    coordinates = Coordinate.objects.get_or_create(**points)[0]
                     polygon.coordinates.add(coordinates)
             serializer.save()
             return Response(

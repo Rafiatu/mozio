@@ -71,7 +71,7 @@ WSGI_APPLICATION = "transport.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {'default': dj_database_url.config(default='sqlite:///database.db')}
+DATABASES = {"default": dj_database_url.config(default="sqlite:///database.db")}
 
 
 # Password validation
@@ -108,9 +108,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATIC_URL = '/static/'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_URL = "/static/"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 AUTH_USER_MODEL = "locations.Provider"

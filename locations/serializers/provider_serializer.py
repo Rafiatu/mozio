@@ -5,4 +5,5 @@ from locations.models import Provider
 class ProviderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Provider
-        fields = ["username", "email", "phone_number", "language", "currency"]
+        fields = ["id", "username", "email", "phone_number", "language", "currency"]
+        extra_kwargs = {"id": {"required": False}}
