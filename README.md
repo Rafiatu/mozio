@@ -4,7 +4,9 @@
 ## Description
 This is a basic REST API application in python using Django rest framework. 
 It allows users to register, login, logout, register new service areas using their coordinates, search for service areas based on coordinates etc.
+
 The official documentation for this implementation can be found on Postman at [Service Providers API](https://documenter.getpostman.com/view/13163492/UVknvH7Z).
+
 This API is currently hosted on AWS servers via appliku and can be found at [Polygons endpoints](https://rafimozio.applikuapp.com/api/providers/register/)
 
 
