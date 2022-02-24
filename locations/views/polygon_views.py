@@ -97,7 +97,7 @@ class LocationsView(ViewSet):
             )
         polygon.delete()
         return Response(
-            {"Response": "Task Deleted Successfully"},
+            {"message": "Polygon Deleted Successfully"},
             status=status.HTTP_204_NO_CONTENT,
         )
 

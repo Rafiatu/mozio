@@ -37,21 +37,6 @@ class ProvidersView(ViewSet):
         serializer = self.serializer_class(provider)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {
-                    "message": f"successully created new geojson Provider {serializer.validated_data.get('name')}",
-                    "data": serializer.validated_data,
-                },
-                status=status.HTTP_201_CREATED,
-            )
-        return Response(
-            {"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST
-        )
-
     def update(self, request, pk, *args, **kwargs):
         provider = get_object_or_404(Provider, id=pk)
         serializer = self.serializer_class(provider, data=request.data, partial=True)
@@ -73,7 +58,7 @@ class ProvidersView(ViewSet):
         name = provider.username
         provider.delete()
         return Response(
-            {"Response": f"{name} deleted successfully"},
+            {"message": f"{name} deleted successfully"},
             status=status.HTTP_204_NO_CONTENT,
         )
 
